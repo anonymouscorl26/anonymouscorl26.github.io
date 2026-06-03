@@ -192,6 +192,7 @@
   <script type="text/javascript" id="MathJax-script" async
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -500,7 +501,7 @@
     <section class="hero is-small">
       <div class="hero-body">
         <div class="container">
-          <h2 class="title is-3">Side-to-Side Comparison with <span class="dnerf">SotAs</span></h2>
+          <h2 class="title is-3">Side-to-Side Comparison with <span class="dnerf">LAPA</span></h2>
           <div class="container video-grid">
             <div class="video-item">
               <video preload="none" autoplay controls muted loop playbackRate="2.0">
@@ -521,9 +522,32 @@
 
     <section class="hero is-small is-light">
       <div class="hero-body">
-        <div class="container">
+        <div class="container is-centered">
           <h2 class="title is-3">Quantitative Results</span></h2>
+          <p class="is-size-5">
+            Across both benchmarks, a consistent pattern emerges: injecting explicit depth information improves long-horizon robustness, but the magnitude of the gain depends strongly on how depth is integrated.
+          </p>
+          <p class="is-size-5">
+            On LIBERO-LONG, which emphasizes spatial precision over extended manipulation sequences, depth-augmented variants yield substantial improvements over the RGB-only baseline. In particular, <strong>Model 4</strong> achieves the best overall performance (+6.4%), closely followed by <strong>Model 2</strong> (+5.4%). This indicates that explicit geometric cues help resolve fine-grained spatial ambiguities that are difficult to infer from RGB alone. Notably, not all depth integration strategies are equally effective—<strong>Model 5</strong> underperforms the baseline—highlighting that gains depend on how depth is represented and fused.
+          </p>
 
+          <div class="chart-container">
+            <canvas id="liberoChart"></canvas>
+            <p class="image-caption">Our depth-augmented variants yield substantial improvements over the RGB-only baseline.</p>
+          </div>
+
+          <p class="is-size-5">
+            On CALVIN, where errors compound across sequential task chains, the benefit of depth appears differently. While the RGB baseline starts strong on the first task, its performance degrades more rapidly over time. In contrast, <strong>Model 2</strong> and <strong>Model 4</strong> maintain higher success rates in later stages, resulting in improved average task completion. This suggests that depth provides stable geometric grounding that mitigates drift over long-horizon execution.
+          </p>
+
+          <div class="chart-container">
+            <canvas id="calvinChart"></canvas>
+            <p class="image-caption">While LAPA starts with high initial task success, our depth-augmented variants demonstrate higher average task completion and robustness to compounding errors.</p>
+          </div>
+
+          <p class="is-size-5">
+            Overall, these results indicate that depth primarily improves <em>robustness over time</em> rather than initial task success. <strong>Model 2</strong> is particularly effective in ultra-long sequences, likely due to its discrete depth-token formulation acting as a stabilizing signal, while <strong>Model 4</strong> achieves the strongest peak performance through richer feature integration. Together, the results support the view that dense geometric information is a key missing component in RGB-pretrained VLA models.
+          </p>
         </div>
       </div>
     </section>
@@ -567,7 +591,6 @@
     </section> -->
     <!--End BibTex citation -->
 
-
     <footer class="footer">
       <div class="container">
         <div class="columns is-centered">
@@ -597,5 +620,8 @@
     <!-- End of Statcounter Code -->
 
 </body>
+<script>
+
+</script>
 
 </html>
