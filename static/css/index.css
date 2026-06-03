@@ -749,5 +749,31 @@ a:focus {
   }
 }
 
+.video-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      /* Adjust spacing between videos */
+    }
 
+.video-item {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
 
+video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  /* Optional: rounded corners */
+}
+
+.video-caption {
+  margin-top: 8px;
+  /* Adds space above caption */
+  font-size: 1.2rem;
+  /* Adjusts font size */
+  color: #333;
+  /* Text color */
+}

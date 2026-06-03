@@ -365,7 +365,7 @@
     <!-- End teaser video -->
 
     <!-- Paper abstract -->
-    <section class="section hero is-light">
+    <section class="section hero is-light" id="abstract">
       <div class="container is-max-desktop">
         <div class="columns is-centered has-text-centered">
           <div class="column is-four-fifths">
@@ -403,35 +403,35 @@
 
 
     <!-- Image carousel -->
-    <section class="hero is-small">
+    <!-- <section class="hero is-small">
       <div class="hero-body">
         <div class="container">
           <div id="results-carousel" class="carousel results-carousel">
-            <div class="item">
-              <!-- TODO: Replace with your research result images -->
-              <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy" />
-              <!-- TODO: Replace with description of this result -->
-              <h2 class="subtitle has-text-centered">
-                First interesting robots image/gif description.
+            <div class="item"> -->
+    <!-- TODO: Replace with your research result images -->
+    <!-- <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy" /> -->
+    <!-- TODO: Replace with description of this result -->
+    <!-- <h2 class="subtitle has-text-centered"> -->
+    <!-- First interesting robots image/gif description.
               </h2>
             </div>
-            <div class="item">
-              <!-- Your image here -->
-              <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy" />
+            <div class="item"> -->
+    <!-- Your image here -->
+    <!-- <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy" />
               <h2 class="subtitle has-text-centered">
                 Second interesting robots image/gif description.
               </h2>
             </div>
-            <div class="item">
-              <!-- Your image here -->
-              <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy" />
+            <div class="item"> -->
+    <!-- Your image here -->
+    <!-- <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy" />
               <h2 class="subtitle has-text-centered">
                 Third interesting robots image/gif description.
               </h2>
             </div>
-            <div class="item">
-              <!-- Your image here -->
-              <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy" />
+            <div class="item"> -->
+    <!-- Your image here -->
+    <!-- <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy" />
               <h2 class="subtitle has-text-centered">
                 Fourth interesting robots image/gif description.
               </h2>
@@ -439,64 +439,95 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- End image carousel -->
 
     <!-- Youtube video -->
-    <section class="hero is-small is-light">
+    <!-- <section class="hero is-small is-light">
       <div class="hero-body">
-        <div class="container">
-          <!-- Paper video. -->
-          <h2 class="title is-3">Video Presentation</h2>
+        <div class="container"> -->
+    <!-- Paper video. -->
+    <!-- <h2 class="title is-3">Video Presentation</h2>
           <div class="columns is-centered has-text-centered">
             <div class="column is-four-fifths">
 
-              <div class="publication-video">
-                <!-- TODO: Replace with your YouTube video ID -->
-                <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0"
+              <div class="publication-video"> -->
+    <!-- TODO: Replace with your YouTube video ID -->
+    <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0"
                   allow="autoplay; encrypted-media" allowfullscreen></iframe>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- End youtube video -->
 
 
     <!-- Video carousel -->
-    <section class="hero is-small">
+    <!-- <section class="hero is-small">
       <div class="hero-body">
         <div class="container">
           <h2 class="title is-3">Another Carousel</h2>
           <div id="results-carousel" class="carousel results-carousel">
-            <div class="item item-video1">
-              <!-- TODO: Add poster image for better preview -->
-              <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
-                <!-- Your video file here -->
-                <source src="static/videos/carousel1.mp4" type="video/mp4">
+            <div class="item item-video1"> -->
+    <!-- TODO: Add poster image for better preview -->
+    <!-- <video poster="" id="video1" controls muted loop height="100%" preload="metadata"> -->
+    <!-- Your video file here -->
+    <!-- <source src="static/videos/carousel1.mp4" type="video/mp4"> -->
+    <!-- </video>
+            </div>
+            <div class="item item-video2"> -->
+    <!-- TODO: Add poster image for better preview -->
+    <!-- <video poster="" id="video2" controls muted loop height="100%" preload="metadata"> -->
+    <!-- Your video file here -->
+    <!-- <source src="static/videos/carousel2.mp4" type="video/mp4">
               </video>
             </div>
-            <div class="item item-video2">
-              <!-- TODO: Add poster image for better preview -->
-              <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
-                <!-- Your video file here -->
-                <source src="static/videos/carousel2.mp4" type="video/mp4">
+            <div class="item item-video3"> -->
+    <!-- TODO: Add poster image for better preview -->
+    <!-- <video poster="" id="video3" controls muted loop height="100%" preload="metadata"> -->
+    <!-- Your video file here -->
+    <!-- <source src="static/videos/carousel3.mp4" type="video/mp4"> -->
+    <!-- </video> -->
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </section> -->
+    <!-- End video carousel -->
+
+    <section class="hero is-small">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="title is-3">Side-to-Side Comparison with <span class="dnerf">SotAs</span></h2>
+          <div class="container video-grid">
+            <div class="video-item">
+              <video preload="none" autoplay controls muted loop playbackRate="2.0">
+                <source src="static/videos/dlapa-success-task4.mp4" type="video/mp4">
               </video>
+              <p class="video-caption"><span class="dnerf">D-LAPA</span></p>
             </div>
-            <div class="item item-video3">
-              <!-- TODO: Add poster image for better preview -->
-              <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
-                <!-- Your video file here -->
-                <source src="static/videos/carousel3.mp4" type="video/mp4">
+            <div class="video-item">
+              <video preload="none" autoplay controls muted loop playbackRate="2.0">
+                <source src="static/videos/lapa-failure-task4.mp4" type="video/mp4">
               </video>
+              <p class="video-caption"><span class="dnerf">LAPA</span></p>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- End video carousel -->
-     
+
+    <section class="hero is-small is-light">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="title is-3">Quantitative Results</span></h2>
+
+        </div>
+      </div>
+    </section>
+
 
     <!-- Paper poster -->
     <!-- <section class="hero is-small is-light">
