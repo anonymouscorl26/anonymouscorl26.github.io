@@ -474,109 +474,181 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const modelData = {
-  model1: `
-    <h5 class="title is-5">Model 1</h5>
+    model1: `
+    <div class="model-detail-header mb-4">
+      <h4 class="title is-4 has-text-link">Model 1: Discrete Indexing</h4>
+      <p class="subtitle is-6 text-muted">Depth Image with RGB-Index Conditioning</p>
+    </div>
 
-    <p class="is-size-6">
-      <strong>Input:</strong> Depth image $D_t$ + RGB latent indices $z_t^{\\mathrm{rgb\\text{-}idx}}$
-    </p>
+    <div class="columns is-multiline mb-4">
+      <div class="column is-6">
+        <div class="tags-container">
+          <span class="tag is-info is-light"><strong>Input 1:</strong> Depth Image $D_t$</span>
+          <span class="tag is-link is-light"><strong>Input 2:</strong> RGB Latent Indices $z_t^{\\mathrm{rgb\\text{-}idx}}$</span>
+        </div>
+      </div>
+      <div class="column is-6 has-text-right-tablet">
+        <span class="tag is-info is-light"><strong>Supervision:</strong> Cross-Entropy (CE)</span>
+      </div>
+    </div>
 
-    <p class="is-size-6">
-      $$h_t^D = f(D_t, z_t^{\\mathrm{rgb\\text{-}idx}}), \\quad
-      \\hat{\\ell}_t^D = g(h_t^D)$$
-    </p>
+    <div class="equation-block box py-4 px-5 my-4">
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Forward Pass & Logits Estimation:</p>
+      $$h_t^D = f_{\\phi}^{(1)}\\left(D_t,\\, z_t^{\\mathrm{rgb\\text{-}idx}}\\right), \\qquad \\hat{\\ell}_t^D = g_{\\phi}^{(1)}(h_t^D)$$
+      <p class="is-size-7 text-muted mt-2">Where $\\hat{\\ell}_t^D \\in \\mathbb{R}^{4 \\times K}$ over codebook size $K=8$.</p>
+      
+      <hr class="my-3" style="height: 1px; background-color: #e2e8f0;">
+      
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Objective Function:</p>
+      $$\\mathcal{L}_{\\mathrm{M1}} = \\mathrm{CE}\\left(\\hat{\\ell}_t^D,\\, z_t^{\\mathrm{depth\\text{-}idx}}\\right)$$
+    </div>
 
-    <p class="is-size-6">
-      $$\\mathcal{L} = \\mathrm{CE}(\\hat{\\ell}_t^D, z_t^{\\mathrm{depth\\text{-}idx}})$$
-    </p>
-
-    <p class="is-size-6 has-text-grey">
-      Predicts discrete depth tokens via classification. Tests whether <em>index-level conditioning</em> is sufficient.
-    </p>
+    <div class="message is-info mt-4">
+      <div class="message-body py-3 px-4 text-justified">
+        <strong>Ablation Target:</strong> Tests whether coarse <em>index-level conditioning</em> provides sufficient cross-modality constraints. The intermediate feature $h_t^D$ is passed to the downstream fusion network, but it bypasses direct feature regression constraints.
+      </div>
+    </div>
   `,
 
-  model2: `
-    <h5 class="title is-5">Model 2</h5>
+    model2: `
+    <div class="model-detail-header mb-4">
+      <h4 class="title is-4 has-text-link">Model 2: Continuous Conditioning Classification</h4>
+      <p class="subtitle is-6 text-muted">Depth Image with RGB-Feature Conditioning</p>
+    </div>
 
-    <p class="is-size-6">
-      <strong>Input:</strong> Depth image $D_t$ + RGB feature $z_t^{\\mathrm{rgb\\text{-}feat}}$
-    </p>
+    <div class="columns is-multiline mb-4">
+      <div class="column is-6">
+        <div class="tags-container">
+          <span class="tag is-info is-light"><strong>Input 1:</strong> Depth Image $D_t$</span>
+          <span class="tag is-link is-light"><strong>Input 2:</strong> Continuous RGB Feature $z_t^{\\mathrm{rgb\\text{-}feat}}$</span>
+        </div>
+      </div>
+      <div class="column is-6 has-text-right-tablet">
+        <span class="tag is-info is-light"><strong>Supervision:</strong> Cross-Entropy (CE)</span>
+      </div>
+    </div>
 
-    <p class="is-size-6">
-      $$h_t^D = f(D_t, z_t^{\\mathrm{rgb\\text{-}feat}}), \\quad
-      \\hat{\\ell}_t^D = g(h_t^D)$$
-    </p>
+    <div class="equation-block box py-4 px-5 my-4">
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Forward Pass & Logits Estimation:</p>
+      $$h_t^D = f_{\\phi}^{(2)}\\left(D_t,\\, z_t^{\\mathrm{rgb\\text{-}feat}}\\right), \\qquad \\hat{\\ell}_t^D = g_{\\phi}^{(2)}(h_t^D)$$
+      
+      <hr class="my-3" style="height: 1px; background-color: #e2e8f0;">
+      
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Objective Function:</p>
+      $$\\mathcal{L}_{\\mathrm{M2}} = \\mathrm{CE}\\left(\\hat{\\ell}_t^D,\\, z_t^{\\mathrm{depth\\text{-}idx}}\\right)$$
+    </div>
 
-    <p class="is-size-6">
-      $$\\mathcal{L} = \\mathrm{CE}(\\hat{\\ell}_t^D, z_t^{\\mathrm{depth\\text{-}idx}})$$
-    </p>
-
-    <p class="is-size-6 has-text-grey">
-      Same objective as Model 1 but with continuous conditioning. Tests whether <em>feature-level signals</em> improve depth token prediction.
-    </p>
+    <div class="message is-info mt-4">
+      <div class="message-body py-3 px-4 text-justified">
+        <strong>Ablation Target:</strong> Directly contrasts against Model 1 to evaluate if rich <em>feature-level continuous signals</em> provide cleaner contextual anchors for tokenized depth extraction than discrete equivalents.
+      </div>
+    </div>
   `,
 
-  model3: `
-    <h5 class="title is-5">Model 3</h5>
+    model3: `
+    <div class="model-detail-header mb-4">
+      <h4 class="title is-4 has-text-link">Model 3: Blind Token Prediction</h4>
+      <p class="subtitle is-6 text-muted">RGB-Feature-Only Depth-Token Prediction</p>
+    </div>
 
-    <p class="is-size-6">
-      <strong>Input:</strong> RGB feature only $z_t^{\\mathrm{rgb\\text{-}feat}}$
-    </p>
+    <div class="columns is-multiline mb-4">
+      <div class="column is-6">
+        <div class="tags-container">
+          <span class="tag is-link is-light"><strong>Input 1:</strong> Frozen RGB Feature $z_t^{\\mathrm{rgb\\text{-}feat}}$</span>
+        </div>
+      </div>
+      <div class="column is-6 has-text-right-tablet">
+        <span class="tag is-info is-light"><strong>Supervision:</strong> Cross-Entropy (CE)</span>
+        <span class="tag is-warning is-light"><strong>Omitted:</strong> Explicit Depth Image ($D_t$)</span>
+      </div>
+    </div>
 
-    <p class="is-size-6">
-      $$h_t^D = f(z_t^{\\mathrm{rgb\\text{-}feat}}), \\quad
-      \\hat{\\ell}_t^D = g(h_t^D)$$
-    </p>
+    <div class="equation-block box py-4 px-5 my-4">
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Forward Pass & Logits Estimation:</p>
+      $$h_t^D = f_{\\phi}^{(3)}\\left(z_t^{\\mathrm{rgb\\text{-}feat}}\\right), \\qquad \\hat{\\ell}_t^D = g_{\\phi}^{(3)}(h_t^D)$$
+      
+      <hr class="my-3" style="height: 1px; background-color: #e2e8f0;">
+      
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Objective Function:</p>
+      $$\\mathcal{L}_{\\mathrm{M3}} = \\mathrm{CE}\\left(\\hat{\\ell}_t^D,\\, z_t^{\\mathrm{depth\\text{-}idx}}\\right)$$
+    </div>
 
-    <p class="is-size-6">
-      $$\\mathcal{L} = \\mathrm{CE}(\\hat{\\ell}_t^D, z_t^{\\mathrm{depth\\text{-}idx}})$$
-    </p>
-
-    <p class="is-size-6 has-text-grey">
-      Removes depth input entirely. Tests whether RGB alone encodes enough information to infer <em>discrete geometry</em>.
-    </p>
+    <div class="message is-warning mt-4">
+      <div class="message-body py-3 px-4 text-justified">
+        <strong>Ablation Target:</strong> Serves as a primary baseline control check. Removing the depth image entirely evaluates whether the frozen RGB stream inherently encapsulates latent biases capable of inferring <em>discrete geometry transitions</em> without real-time physical sensor input.
+      </div>
+    </div>
   `,
 
-  model4: `
-    <h5 class="title is-5">Model 4</h5>
+    model4: `
+    <div class="model-detail-header mb-4">
+      <h4 class="title is-4" style="color: #48c774">Model 4: Full Feature Distillation</h4>
+      <p class="subtitle is-6 text-muted">Depth Image & RGB-Feature Conditioned Feature Distillation</p>
+    </div>
 
-    <p class="is-size-6">
-      <strong>Input:</strong> Depth image $D_t$ + RGB feature $z_t^{\\mathrm{rgb\\text{-}feat}}$
-    </p>
+    <div class="columns is-multiline mb-4">
+      <div class="column is-6">
+        <div class="tags-container">
+          <span class="tag is-success is-light"><strong>Input 1:</strong>Depth Image $D_t$</span>
+          <span class="tag is-success is-light"><strong>Input 2:</strong> Continuous RGB Feature $z_t^{\\mathrm{rgb\\text{-}feat}}$</span>
+        </div>
+      </div>
+      <div class="column is-6 has-text-right-tablet">
+        <span class="tag is-success is-light"><strong>Supervision:</strong> Multi-Objective Distillation</span>
+      </div>
+    </div>
 
-    <p class="is-size-6">
-      $$\\hat{z}_t^D = f(D_t, z_t^{\\mathrm{rgb\\text{-}feat}})$$
-    </p>
+    <div class="equation-block box py-4 px-5 my-4">
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Continuous Latent Estimation:</p>
+      $$\\hat{z}_t^D = f_{\\phi}^{(4)}\\left(D_t,\\, z_t^{\\mathrm{rgb\\text{-}feat}}\\right)$$
+      
+      <hr class="my-3" style="height: 1px; background-color: #e2e8f0;">
+      
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Joint Loss Formulation:</p>
+      $$\\mathcal{L}_{\\mathrm{M4}} = \\left\\|\\hat{z}_t^D - z_t^{\\mathrm{depth\\text{-}feat}}\\right\\|_2^2 + \\lambda_{\\cos}\\left(1 - \\cos\\left(\\hat{z}_t^D,\\, z_t^{\\mathrm{depth\\text{-}feat}}\\right)\\right)$$
+      <p class="is-size-7 text-muted mt-2">Where $\\lambda_{\\cos}=0.1$. The L2 norm preserves strict spatial magnitudes while the cosine constraint locks directional representation paths.</p>
+    </div>
 
-    <p class="is-size-6">
-      $$\\mathcal{L} = \\|\\hat{z}_t^D - z_t^{\\mathrm{depth\\text{-}feat}}\\|_2^2
-      + \\lambda_{\\cos}(1 - \\cos(\\hat{z}_t^D, z_t^{\\mathrm{depth\\text{-}feat}}))$$
-    </p>
-
-    <p class="is-size-6 has-text-grey">
-      Directly distills continuous depth features. Main model capturing <em>dense geometric structure</em>.
-    </p>
+    <div class="message is-success mt-4">
+      <div class="message-body py-3 px-4 text-justified">
+        <strong>Core Architecture Design:</strong> Our default Stage 2.5 design framework. Bypassing categorical classification bounds allows it to distill a continuous feature manifold directly from the Stage 1 teacher model, cleanly locking onto <em>dense geometric layouts</em> required for high-frequency tracking.
+      </div>
+    </div>
   `,
 
-  model5: `
-    <h5 class="title is-5">Model 5</h5>
+    model5: `
+    <div class="model-detail-header mb-4">
+      <h4 class="title is-4" style="color: #48c774">Model 5: Continuous Hallucination Network</h4>
+      <p class="subtitle is-6 text-muted">RGB-Feature-Only Continuous Feature Distillation</p>
+    </div>
 
-    <p class="is-size-6">
-      <strong>Input:</strong> RGB feature only $z_t^{\\mathrm{rgb\\text{-}feat}}$
-    </p>
+    <div class="columns is-multiline mb-4">
+      <div class="column is-6">
+        <div class="tags-container">
+          <span class="tag is-success is-light"><strong>Input 1:</strong> Frozen RGB Feature $z_t^{\\mathrm{rgb\\text{-}feat}}$</span>
+        </div>
+      </div>
+      <div class="column is-6 has-text-right-tablet">
+        <span class="tag is-success is-light"><strong>Supervision:</strong> Multi-Objective Distillation</span>
+        <span class="tag is-warning is-light"><strong>Omitted:</strong> Explicit Depth Maps ($D_t$)</span>
+      </div>
+    </div>
 
-    <p class="is-size-6">
-      $$\\hat{z}_t^D = f(z_t^{\\mathrm{rgb\\text{-}feat}})$$
-    </p>
+    <div class="equation-block box py-4 px-5 my-4">
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Continuous Feature Mapping:</p>
+      $$\\hat{z}_t^D = f_{\\phi}^{(5)}\\left(z_t^{\\mathrm{rgb\\text{-}feat}}\\right)$$
+      
+      <hr class="my-3" style="height: 1px; background-color: #e2e8f0;">
+      
+      <p class="is-size-6 mb-2 text-muted font-weight-bold">Joint Loss Formulation:</p>
+      $$\\mathcal{L}_{\\mathrm{M5}} = \\left\\|\\hat{z}_t^D - z_t^{\\mathrm{depth\\text{-}feat}}\\right\\|_2^2 + \\lambda_{\\cos}\\left(1 - \\cos\\left(\\hat{z}_t^D,\\, z_t^{\\mathrm{depth\\text{-}feat}}\\right)\\right)$$
+    </div>
 
-    <p class="is-size-6">
-      $$\\mathcal{L} = \\|\\hat{z}_t^D - z_t^{\\mathrm{depth\\text{-}feat}}\\|_2^2
-      + \\lambda_{\\cos}(1 - \\cos(\\hat{z}_t^D, z_t^{\\mathrm{depth\\text{-}feat}}))$$
-    </p>
-
-    <p class="is-size-6 has-text-grey">
-      No depth input. Tests whether RGB can <em>hallucinate continuous geometry</em>.
-    </p>
+    <div class="message is-warning mt-4">
+      <div class="message-body py-3 px-4 text-justified">
+        <strong>Ablation Target:</strong> Explores model boundaries by verifying if dense continuous geometry can be purely <em>hallucinated</em> from semantic structures within the frozen visual backbone without direct spatial sensor feedback during downstream interaction.
+      </div>
+    </div>
   `
 };
 

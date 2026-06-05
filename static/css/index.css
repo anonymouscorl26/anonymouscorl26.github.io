@@ -928,7 +928,7 @@ video {
 
 /* ACTIVE STATE */
 .model-detail-panel.active {
-  max-height: 400px; /* adjust depending on content */
+  max-height: 600px; /* adjust depending on content */
   opacity: 1;
   transform: translateY(0) scale(1);
   margin-top: 20px;
