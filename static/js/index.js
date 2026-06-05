@@ -472,3 +472,140 @@ document.addEventListener('DOMContentLoaded', () => {
         title = "CALVIN Long-Horizon Results"
     );
 });
+
+const modelData = {
+  model1: `
+    <h5 class="title is-5">Model 1</h5>
+
+    <p class="is-size-6">
+      <strong>Input:</strong> Depth image $D_t$ + RGB latent indices $z_t^{\\mathrm{rgb\\text{-}idx}}$
+    </p>
+
+    <p class="is-size-6">
+      $$h_t^D = f(D_t, z_t^{\\mathrm{rgb\\text{-}idx}}), \\quad
+      \\hat{\\ell}_t^D = g(h_t^D)$$
+    </p>
+
+    <p class="is-size-6">
+      $$\\mathcal{L} = \\mathrm{CE}(\\hat{\\ell}_t^D, z_t^{\\mathrm{depth\\text{-}idx}})$$
+    </p>
+
+    <p class="is-size-6 has-text-grey">
+      Predicts discrete depth tokens via classification. Tests whether <em>index-level conditioning</em> is sufficient.
+    </p>
+  `,
+
+  model2: `
+    <h5 class="title is-5">Model 2</h5>
+
+    <p class="is-size-6">
+      <strong>Input:</strong> Depth image $D_t$ + RGB feature $z_t^{\\mathrm{rgb\\text{-}feat}}$
+    </p>
+
+    <p class="is-size-6">
+      $$h_t^D = f(D_t, z_t^{\\mathrm{rgb\\text{-}feat}}), \\quad
+      \\hat{\\ell}_t^D = g(h_t^D)$$
+    </p>
+
+    <p class="is-size-6">
+      $$\\mathcal{L} = \\mathrm{CE}(\\hat{\\ell}_t^D, z_t^{\\mathrm{depth\\text{-}idx}})$$
+    </p>
+
+    <p class="is-size-6 has-text-grey">
+      Same objective as Model 1 but with continuous conditioning. Tests whether <em>feature-level signals</em> improve depth token prediction.
+    </p>
+  `,
+
+  model3: `
+    <h5 class="title is-5">Model 3</h5>
+
+    <p class="is-size-6">
+      <strong>Input:</strong> RGB feature only $z_t^{\\mathrm{rgb\\text{-}feat}}$
+    </p>
+
+    <p class="is-size-6">
+      $$h_t^D = f(z_t^{\\mathrm{rgb\\text{-}feat}}), \\quad
+      \\hat{\\ell}_t^D = g(h_t^D)$$
+    </p>
+
+    <p class="is-size-6">
+      $$\\mathcal{L} = \\mathrm{CE}(\\hat{\\ell}_t^D, z_t^{\\mathrm{depth\\text{-}idx}})$$
+    </p>
+
+    <p class="is-size-6 has-text-grey">
+      Removes depth input entirely. Tests whether RGB alone encodes enough information to infer <em>discrete geometry</em>.
+    </p>
+  `,
+
+  model4: `
+    <h5 class="title is-5">Model 4</h5>
+
+    <p class="is-size-6">
+      <strong>Input:</strong> Depth image $D_t$ + RGB feature $z_t^{\\mathrm{rgb\\text{-}feat}}$
+    </p>
+
+    <p class="is-size-6">
+      $$\\hat{z}_t^D = f(D_t, z_t^{\\mathrm{rgb\\text{-}feat}})$$
+    </p>
+
+    <p class="is-size-6">
+      $$\\mathcal{L} = \\|\\hat{z}_t^D - z_t^{\\mathrm{depth\\text{-}feat}}\\|_2^2
+      + \\lambda_{\\cos}(1 - \\cos(\\hat{z}_t^D, z_t^{\\mathrm{depth\\text{-}feat}}))$$
+    </p>
+
+    <p class="is-size-6 has-text-grey">
+      Directly distills continuous depth features. Main model capturing <em>dense geometric structure</em>.
+    </p>
+  `,
+
+  model5: `
+    <h5 class="title is-5">Model 5</h5>
+
+    <p class="is-size-6">
+      <strong>Input:</strong> RGB feature only $z_t^{\\mathrm{rgb\\text{-}feat}}$
+    </p>
+
+    <p class="is-size-6">
+      $$\\hat{z}_t^D = f(z_t^{\\mathrm{rgb\\text{-}feat}})$$
+    </p>
+
+    <p class="is-size-6">
+      $$\\mathcal{L} = \\|\\hat{z}_t^D - z_t^{\\mathrm{depth\\text{-}feat}}\\|_2^2
+      + \\lambda_{\\cos}(1 - \\cos(\\hat{z}_t^D, z_t^{\\mathrm{depth\\text{-}feat}}))$$
+    </p>
+
+    <p class="is-size-6 has-text-grey">
+      No depth input. Tests whether RGB can <em>hallucinate continuous geometry</em>.
+    </p>
+  `
+};
+
+let activeModel = null;
+
+const panel = document.getElementById("model-detail-panel");
+const content = panel.querySelector(".model-detail-content");
+
+document.querySelectorAll(".model-item").forEach(item => {
+    item.addEventListener("click", () => {
+        const modelKey = item.dataset.model;
+
+        // Toggle same model
+        if (activeModel === modelKey) {
+            panel.classList.remove("active");
+            activeModel = null;
+            return;
+        }
+
+        // Update content with animation
+        content.classList.remove("fade");
+        void content.offsetWidth; // force reflow
+        content.innerHTML = modelData[modelKey];
+        if (window.MathJax) {
+            MathJax.typesetPromise([content]);
+        }
+        content.classList.add("fade");
+
+        panel.classList.add("active");
+        activeModel = modelKey;
+    });
+});
