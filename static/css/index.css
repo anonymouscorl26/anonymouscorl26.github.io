@@ -795,3 +795,57 @@ video {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Academic Method Section Styling Updates */
+.method-section .title.is-3 {
+  border-bottom: 2px solid #2563eb;
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.method-section .subtitle-boxed {
+  background-color: #f8fafc;
+  border-left: 4px solid #2563eb;
+  padding: 1rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+}
+
+.method-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.method-list li {
+  margin-bottom: 0.75rem;
+  position: relative;
+  list-style-type: none;
+  padding-left: 1.5rem;
+}
+
+.method-list li::before {
+  content: "•";
+  color: #2563eb;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+  top: -2px;
+}
+
+.pipeline-caption {
+  margin-top: 0.75rem;
+  background: #f1f5f9;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.pipeline-box {
+  border-radius: 20px !important;
+  overflow: hidden;
+  border: 1px solid #e2e8f0; 
+}

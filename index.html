@@ -497,11 +497,84 @@
     <!-- </div> -->
     <!-- </section> -->
     <!-- End video carousel -->
-
     <section class="hero is-small">
       <div class="hero-body">
         <div class="container">
+          <h2 class="title is-3">Methodology Overview</h2>
+        
+        <div class="content mb-6">
+          <p class="is-size-5 text-justified">
+            Our empirical feature analysis on the <span class="dnerf">LIBERO-10</span> benchmark uncovers a critical bottleneck in existing Vision-Language-Action (VLA) pipelines:
+          </p>
+          <ul class="method-list is-size-5">
+            <li><strong>Spatial Concepts are Absent from Latent Labels:</strong> Post-quantization tokens effectively isolate semantic descriptions but collapse geometric scale and action magnitude information.</li>
+            <li><strong>Depth Injection Restores Geometric Context:</strong> Introducing targeted geometric features drastically improves spatial correlation metrics without expanding the core VLA parameter footprint.</li>
+          </ul>
+        </div>
+
+        <hr class="my-6">
+
+        <div class="columns is-vcentered mb-6">
+          <div class="column is-12">
+            <h3 class="title is-4 mb-3">
+              <span class="dnerf">D-LAPA: Depth-Augmented Latent Action Pretraining</span>
+            </h3>
+            <p class="is-size-5 text-justified">
+              To resolve these limitations, we introduce <span class="dnerf">D-LAPA</span>. We fine-tune the base framework by introducing lightweight geometric components. This architecture isolates depth contributions cleanly for systematic ablation, serving as an efficient module for injecting dense spatial reasoning into frozen RGB token streams.
+            </p>
+          </div>
+        </div>
+
+        <div class="box has-text-centered p-5 mb-6 pipeline-box">
+          <figure class="image is-inline-block">
+            <img src="static/images/depth-lapa.jpg" alt="D-LAPA Two-Stage Training Pipeline Diagram" style="border-radius: 6px; max-width: 100%;">
+          </figure>
+          <div class="pipeline-caption has-text-left mt-3">
+            <p class="is-size-6 text-muted">
+              <strong>Depth representation learning pipeline.</strong> 
+              <em>Stage 1:</em> Pretrains a depth teacher network across paired depth frames to generate a frozen ground-truth spatial descriptor \(\texttt{z}_{\text{depth_feature}}\). 
+              <em>Stage 2.5:</em> Trains a lightweight depth encoder to reconstruct this spatial feature directly from raw depth inputs and frozen <span class="dnerf">LAPA</span> RGB embeddings using a joint Mean Squared Error (MSE) and cosine loss.
+            </p>
+          </div>
+        </div>
+
+        <div class="content">
+          <h3 class="title is-4 mb-4">Controlled Evaluation Paradigms</h3>
+          <p class="is-size-5 mb-5">
+            We systematically evaluate five model variants split into two distinct architectural families to isolate precisely how depth structures influence downstream cross-domain manipulation:
+          </p>
+          
+          <div class="columns">
+            <div class="column is-6">
+              <div class="method-card">
+                <h4 class="title is-5 has-text-link mb-2">Discrete Indexing Family</h4>
+                <p class="subtitle is-6 class mb-3 mt-3"><strong>Models 1, 2, & 3</strong></p>
+                <p class="is-size-6 text-justified">
+                  Learn structural depth representations indirectly by mapping inputs to quantized, discrete spatial bins. This formulates depth as a categorical token categorization task matching the classification-like paradigms of modern LLMs.
+                </p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="method-card">
+                <h4 class="title is-5 has-text-link mb-2">Continuous Feature Distillation</h4>
+                <p class="subtitle is-6 mb-3 mt-3"><strong>Models 4 & 5</strong></p>
+                <p class="is-size-6 text-justified">
+                  Directly distill dense, continuous embedding spaces from our frozen depth teacher network. This preserves fine-grained geometric gradients and high-frequency spatial topologies necessary for ultra-precise micro-manipulation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero is-small is-light">
+      <div class="hero-body">
+        <div class="container">
           <h2 class="title is-3">Side-to-Side Comparison with <span class="dnerf">LAPA</span></h2>
+          <p class="is-size-5">Spatial understanding capabilities emerge in a depth image encoder pretrained on latent
+            action extraction from non-robot synthetic depth images.</p>
           <div class="container video-grid">
             <div class="video-item">
               <video preload="none" autoplay controls muted loop playbackRate="2.0">
@@ -520,33 +593,50 @@
       </div>
     </section>
 
-    <section class="hero is-small is-light">
+    <section class="hero is-small">
       <div class="hero-body">
         <div class="container is-centered">
           <h2 class="title is-3">Quantitative Results</span></h2>
           <p class="is-size-5">
-            Across both benchmarks, a consistent pattern emerges: injecting explicit depth information improves long-horizon robustness, but the magnitude of the gain depends strongly on how depth is integrated.
+            Across both benchmarks, a consistent pattern emerges: injecting explicit depth information improves
+            long-horizon robustness, but the magnitude of the gain depends strongly on how depth is integrated.
           </p>
           <p class="is-size-5">
-            On LIBERO-LONG, which emphasizes spatial precision over extended manipulation sequences, depth-augmented variants yield substantial improvements over the RGB-only baseline. In particular, <strong>Model 4</strong> achieves the best overall performance (+6.4%), closely followed by <strong>Model 2</strong> (+5.4%). This indicates that explicit geometric cues help resolve fine-grained spatial ambiguities that are difficult to infer from RGB alone. Notably, not all depth integration strategies are equally effective—<strong>Model 5</strong> underperforms the baseline—highlighting that gains depend on how depth is represented and fused.
+            On LIBERO-LONG, which emphasizes spatial precision over extended manipulation sequences, depth-augmented
+            variants yield substantial improvements over the RGB-only baseline. In particular, <strong>Model 4</strong>
+            achieves the best overall performance (+6.4%), closely followed by <strong>Model 2</strong> (+5.4%). This
+            indicates that explicit geometric cues help resolve fine-grained spatial ambiguities that are difficult to
+            infer from RGB alone. Notably, not all depth integration strategies are equally effective—<strong>Model
+              5</strong> underperforms the baseline—highlighting that gains depend on how depth is represented and
+            fused.
           </p>
 
           <div class="chart-container">
             <canvas id="liberoChart"></canvas>
-            <p class="image-caption">Our depth-augmented variants yield substantial improvements over the RGB-only baseline.</p>
+            <p class="image-caption">Our depth-augmented variants yield substantial improvements over the RGB-only
+              baseline.</p>
           </div>
 
           <p class="is-size-5">
-            On CALVIN, where errors compound across sequential task chains, the benefit of depth appears differently. While the RGB baseline starts strong on the first task, its performance degrades more rapidly over time. In contrast, <strong>Model 2</strong> and <strong>Model 4</strong> maintain higher success rates in later stages, resulting in improved average task completion. This suggests that depth provides stable geometric grounding that mitigates drift over long-horizon execution.
+            On CALVIN, where errors compound across sequential task chains, the benefit of depth appears differently.
+            While the RGB baseline starts strong on the first task, its performance degrades more rapidly over time. In
+            contrast, <strong>Model 2</strong> and <strong>Model 4</strong> maintain higher success rates in later
+            stages, resulting in improved average task completion. This suggests that depth provides stable geometric
+            grounding that mitigates drift over long-horizon execution.
           </p>
 
           <div class="chart-container">
             <canvas id="calvinChart"></canvas>
-            <p class="image-caption">While LAPA starts with high initial task success, our depth-augmented variants demonstrate higher average task completion and robustness to compounding errors.</p>
+            <p class="image-caption">While LAPA starts with high initial task success, our depth-augmented variants
+              demonstrate higher average task completion and robustness to compounding errors.</p>
           </div>
 
           <p class="is-size-5">
-            Overall, these results indicate that depth primarily improves <em>robustness over time</em> rather than initial task success. <strong>Model 2</strong> is particularly effective in ultra-long sequences, likely due to its discrete depth-token formulation acting as a stabilizing signal, while <strong>Model 4</strong> achieves the strongest peak performance through richer feature integration. Together, the results support the view that dense geometric information is a key missing component in RGB-pretrained VLA models.
+            Overall, these results indicate that depth primarily improves <em>robustness over time</em> rather than
+            initial task success. <strong>Model 2</strong> is particularly effective in ultra-long sequences, likely due
+            to its discrete depth-token formulation acting as a stabilizing signal, while <strong>Model 4</strong>
+            achieves the strongest peak performance through richer feature integration. Together, the results support
+            the view that dense geometric information is a key missing component in RGB-pretrained VLA models.
           </p>
         </div>
       </div>
