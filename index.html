@@ -501,70 +501,86 @@
       <div class="hero-body">
         <div class="container">
           <h2 class="title is-3">Methodology Overview</h2>
-        
-        <div class="content mb-6">
-          <p class="is-size-5 text-justified">
-            Our empirical feature analysis on the <span class="dnerf">LIBERO-10</span> benchmark uncovers a critical bottleneck in existing Vision-Language-Action (VLA) pipelines:
-          </p>
-          <ul class="method-list is-size-5">
-            <li><strong>Spatial Concepts are Absent from Latent Labels:</strong> Post-quantization tokens effectively isolate semantic descriptions but collapse geometric scale and action magnitude information.</li>
-            <li><strong>Depth Injection Restores Geometric Context:</strong> Introducing targeted geometric features drastically improves spatial correlation metrics without expanding the core VLA parameter footprint.</li>
-          </ul>
-        </div>
 
-        <hr class="my-6">
-
-        <div class="columns is-vcentered mb-6">
-          <div class="column is-12">
-            <h3 class="title is-4 mb-3">
-              <span class="dnerf">D-LAPA: Depth-Augmented Latent Action Pretraining</span>
-            </h3>
+          <div class="content mb-6">
             <p class="is-size-5 text-justified">
-              To resolve these limitations, we introduce <span class="dnerf">D-LAPA</span>. We fine-tune the base framework by introducing lightweight geometric components. This architecture isolates depth contributions cleanly for systematic ablation, serving as an efficient module for injecting dense spatial reasoning into frozen RGB token streams.
+              Our empirical feature analysis on the <span class="dnerf">LIBERO-10</span> benchmark uncovers a critical
+              bottleneck in existing Vision-Language-Action (VLA) pipelines:
             </p>
+            <ul class="method-list is-size-5">
+              <li><strong>Spatial Concepts are Absent from Latent Labels:</strong> Post-quantization tokens effectively
+                isolate semantic descriptions but collapse geometric scale and action magnitude information.</li>
+              <li><strong>Depth Injection Restores Geometric Context:</strong> Introducing targeted geometric features
+                drastically improves spatial correlation metrics without expanding the core VLA parameter footprint.
+              </li>
+            </ul>
           </div>
-        </div>
 
-        <div class="box has-text-centered p-5 mb-6 pipeline-box">
-          <figure class="image is-inline-block">
-            <img src="static/images/depth-lapa.jpg" alt="D-LAPA Two-Stage Training Pipeline Diagram" style="border-radius: 6px; max-width: 100%;">
-          </figure>
-          <div class="pipeline-caption has-text-left mt-3">
-            <p class="is-size-6 text-muted">
-              <strong>Depth representation learning pipeline.</strong> 
-              <em>Stage 1:</em> Pretrains a depth teacher network across paired depth frames to generate a frozen ground-truth spatial descriptor \(\texttt{z}_{\text{depth_feature}}\). 
-              <em>Stage 2.5:</em> Trains a lightweight depth encoder to reconstruct this spatial feature directly from raw depth inputs and frozen <span class="dnerf">LAPA</span> RGB embeddings using a joint Mean Squared Error (MSE) and cosine loss.
-            </p>
-          </div>
-        </div>
+          <hr class="my-6">
 
-        <div class="content">
-          <h3 class="title is-4 mb-4">Controlled Evaluation Paradigms</h3>
-          <p class="is-size-5 mb-5">
-            We systematically evaluate five model variants split into two distinct architectural families to isolate precisely how depth structures influence downstream cross-domain manipulation:
-          </p>
-          
-          <div class="columns">
-            <div class="column is-6">
-              <div class="method-card">
-                <h4 class="title is-5 has-text-link mb-2">Discrete Indexing Family</h4>
-                <p class="subtitle is-6 class mb-3 mt-3"><strong>Models 1, 2, & 3</strong></p>
-                <p class="is-size-6 text-justified">
-                  Learn structural depth representations indirectly by mapping inputs to quantized, discrete spatial bins. This formulates depth as a categorical token categorization task matching the classification-like paradigms of modern LLMs.
-                </p>
-              </div>
-            </div>
-            <div class="column is-6">
-              <div class="method-card">
-                <h4 class="title is-5 has-text-link mb-2">Continuous Feature Distillation</h4>
-                <p class="subtitle is-6 mb-3 mt-3"><strong>Models 4 & 5</strong></p>
-                <p class="is-size-6 text-justified">
-                  Directly distill dense, continuous embedding spaces from our frozen depth teacher network. This preserves fine-grained geometric gradients and high-frequency spatial topologies necessary for ultra-precise micro-manipulation.
-                </p>
-              </div>
+          <div class="columns is-vcentered mb-6">
+            <div class="column is-12">
+              <h3 class="title is-4 mb-3">
+                <span class="dnerf">D-LAPA: Depth-Augmented Latent Action Pretraining</span>
+              </h3>
+              <p class="is-size-5 text-justified">
+                To resolve these limitations, we introduce <span class="dnerf">D-LAPA</span>. We fine-tune the base
+                framework by introducing lightweight geometric components. This architecture isolates depth
+                contributions cleanly for systematic ablation, serving as an efficient module for injecting dense
+                spatial reasoning into frozen RGB token streams.
+              </p>
             </div>
           </div>
-        </div>
+
+          <div class="box has-text-centered p-5 mb-6 pipeline-box">
+            <figure class="image is-inline-block">
+              <img src="static/images/depth-lapa.jpg" alt="D-LAPA Two-Stage Training Pipeline Diagram"
+                style="border-radius: 6px; max-width: 100%;">
+            </figure>
+            <div class="pipeline-caption has-text-left mt-3">
+              <p class="is-size-6 text-muted">
+                <strong>Depth representation learning pipeline.</strong>
+                <em>Stage 1:</em> Pretrains a depth teacher network across paired depth frames to generate a frozen
+                ground-truth spatial descriptor \(\texttt{z}_{\text{depth_feature}}\).
+                <em>Stage 2.5:</em> Trains a lightweight depth encoder to reconstruct this spatial feature directly from
+                raw depth inputs and frozen <span class="dnerf">LAPA</span> RGB embeddings using a joint Mean Squared
+                Error (MSE) and cosine loss.
+              </p>
+            </div>
+          </div>
+
+          <div class="content">
+            <h3 class="title is-4 mb-4">Controlled Evaluation Paradigms</h3>
+            <p class="is-size-5 mb-5">
+              We systematically evaluate five model variants split into two distinct architectural families to isolate
+              precisely how depth structures influence downstream cross-domain manipulation:
+            </p>
+
+            <div class="columns">
+              <div class="column is-6">
+                <div class="method-card">
+                  <h4 class="title is-5 has-text-link mb-2">Discrete Indexing Family</h4>
+                  <p class="subtitle is-6 class mb-3 mt-3"><strong>Models 1, 2, & 3</strong></p>
+                  <p class="is-size-6 text-justified">
+                    Learn structural depth representations indirectly by mapping inputs to quantized, discrete spatial
+                    bins. This formulates depth as a categorical token categorization task matching the
+                    classification-like paradigms of modern LLMs.
+                  </p>
+                </div>
+              </div>
+              <div class="column is-6">
+                <div class="method-card">
+                  <h4 class="title is-5 has-text-link mb-2">Continuous Feature Distillation</h4>
+                  <p class="subtitle is-6 mb-3 mt-3"><strong>Models 4 & 5</strong></p>
+                  <p class="is-size-6 text-justified">
+                    Directly distill dense, continuous embedding spaces from our frozen depth teacher network. This
+                    preserves fine-grained geometric gradients and high-frequency spatial topologies necessary for
+                    ultra-precise micro-manipulation.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
